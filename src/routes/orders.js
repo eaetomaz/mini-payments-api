@@ -7,6 +7,6 @@ const router = express.Router();
 router.post("/", authMiddleware, createOrder);
 router.get("/me", authMiddleware, getMyOrder);
 router.get("/", authMiddleware, getAllOrders);
-router.patch("/:id/pay", authMiddleware, payOrder);
+router.post("/pay/:id", payOrder)
 
 export default router;

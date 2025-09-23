@@ -35,20 +35,24 @@ export const getAllOrders = async (req, res) => {
 };
 
 export const payOrder = async (req, res) => {
+
+    try {
     if(req.user.role !== "admin") 
         return res.status(403).json({ error: "Acesso negado" });
     
-    const { id } = req.params;
-    const [ status ] = req.body;
+    const { id } = req.params;    
+    const order = await Order.findByPk(id);
 
-    try {
-        const order = await Order.findByPk(id);
-        if(!order) return res.status(404).json({ error: "Pedido não encontrado" });
+    if(!order) return res.status(404).json({ message: "Pedido não encontrado"});
 
-        order.status = status;
-        await order.save();
+    if( order.status !== "pending") return res.status(400).json({ message: "Somente pedidos pendentes podem ser pagos" });
 
-        res.json({ message: `Pedido ${status}`, order });
+    order.status = "paid";
+    order.paidAt = new Date();
+    await order.save();
+
+    return res.status(200).json({ message: "Pagamento realizado com sucesso", order});
+           
     } catch(err) {
         res.status(500).json({ error: err.message });
     }

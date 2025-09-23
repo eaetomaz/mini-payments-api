@@ -6,6 +6,7 @@ export const Order = sequelize.define("Order", {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     amount: {type: DataTypes.FLOAT, allowNull: false},
     status: {type: DataTypes.STRING, defaultValue: "pending"},
+    paidAt: {type: DataTypes.DATE, allowNull: true}
 });
 
 User.hasMany(Order, { foreignKey: "userId"});
