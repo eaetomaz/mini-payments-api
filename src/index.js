@@ -7,6 +7,7 @@ import dotenv from "dotenv";
 import { sequelize, testConnection } from "./config/db.js";
 import authRoutes from "./routes/auth.js"
 import orderRoutes from "./routes/orders.js";
+import transactionRoutes from "./routes/transactions.js";
 
 dotenv.config();
 const app = express();
@@ -23,6 +24,7 @@ testConnection();
 
 app.use("/auth", authRoutes);
 app.use("/orders", orderRoutes);
+app.use("/transactions", transactionRoutes);
 
 sequelize.sync({ alter: true});
 
